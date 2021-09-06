@@ -69,6 +69,7 @@ void CLuaCompatibilityDefs::LoadFunctions()
         {"guiMemoSetCaratIndex", CLuaGUIDefs::GUIMemoSetCaretIndex},
         {"setControlState", CLuaPedDefs::SetPedControlState},
         {"getControlState", CLuaPedDefs::GetPedControlState},
+        {"getPlayerClientWeapon", CLuaPedDefs::GetPedClientWeapon},
     };
 
     // Add functions

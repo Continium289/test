@@ -2351,6 +2351,35 @@ int CLuaPedDefs::DetonateSatchels(lua_State* luaVM)
     return 1;
 }
 
+int CLuaPedDefs::GetPedClientWeapon(lua_State* luaVM)
+{
+    //CClientPed*      pEntity = NULL;
+    //CScriptArgReader argStream(luaVM);
+    //argStream.ReadUserData(pEntity);
+
+    SBindableGTAControl* pBind = g_pCore->GetKeyBinds()->GetBindableFromControl("aim_weapon");
+    lua_pushboolean(luaVM, pBind->bState);
+
+    CClientPlayer* p_localPlayer = g_pClientGame->GetLocalPlayer();
+    CClientPed* p_TargettedPlayer = p_localPlayer->GetTargetedPed();
+    bool           result = p_TargettedPlayer ? true : false;
+    //int state = (int)p_localPlayer->GetWeapon()->GetState();
+    lua_pushboolean(luaVM, result);
+    return 2;
+    //int result = g_pClientGame->GetManager()->GetWeaponManager()->GetCountWeapons();
+    //lua_pushnumber(luaVM, result);
+    //return 1;
+
+    //if (!argStream.HasErrors())
+    //{
+    //    if (IS_PED(pEntity))
+    //    {
+    //        CClientPed* pPed = static_cast<CClientPed*>(pEntity);
+    //        return true;
+    //    }
+    //}
+}
+
 bool CLuaPedDefs::SetPedEnterVehicle(CClientPed* pPed, std::optional<CClientVehicle*> pOptVehicle, std::optional<bool> bOptPassenger)
 {
     CClientVehicle* pVehicle = pOptVehicle.value_or(nullptr);
