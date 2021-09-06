@@ -222,6 +222,7 @@ void CNametags::DoPulse()
 void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
 {
     // If nametag is hidden, don't draw
+
     if (!pPlayer->IsNametagShowing())
         return;
 
@@ -278,6 +279,16 @@ void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
         pGraphics->DrawString(iScreenPosX + 1, iScreenPosY + 1, iScreenPosX + 1, iScreenPosY + 1, COLOR_ARGB(255, 0, 0, 0), szNick, 1.0f, 1.0f,
                               DT_NOCLIP | DT_CENTER);
         pGraphics->DrawString(iScreenPosX, iScreenPosY, iScreenPosX, iScreenPosY, COLOR_ARGB(255, ucR, ucG, ucB), szNick, 1.0f, 1.0f, DT_NOCLIP | DT_CENTER);
+
+        SBindableGTAControl* pBind = g_pCore->GetKeyBinds()->GetBindableFromControl("aim_weapon");
+        CClientPlayer*       p_localPlayer = g_pClientGame->GetLocalPlayer();
+        CClientPlayer*       p_targettedPlayer = dynamic_cast<CClientPlayer*>(p_localPlayer->GetTargetedPed());
+
+        // If player is not targetting or aiming by weapon
+        if (!p_targettedPlayer || !pBind->bState || p_targettedPlayer != pPlayer)
+        {
+            return;
+        }
 
         // We need to draw health tags?
         if (m_bDrawHealth)
