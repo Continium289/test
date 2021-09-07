@@ -281,11 +281,11 @@ void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
         pGraphics->DrawString(iScreenPosX, iScreenPosY, iScreenPosX, iScreenPosY, COLOR_ARGB(255, ucR, ucG, ucB), szNick, 1.0f, 1.0f, DT_NOCLIP | DT_CENTER);
 
         SBindableGTAControl* pBind = g_pCore->GetKeyBinds()->GetBindableFromControl("aim_weapon");
-        CClientPlayer*       p_localPlayer = g_pClientGame->GetLocalPlayer();
-        CClientPlayer*       p_targettedPlayer = dynamic_cast<CClientPlayer*>(p_localPlayer->GetTargetedPed());
+        CClientPlayer*       pLocalPlayer = g_pClientGame->GetLocalPlayer();
+        CClientPlayer*       pTargettedPlayer = dynamic_cast<CClientPlayer*>(pLocalPlayer->GetTargetedPed());
 
         // If player is not targetting or aiming by weapon
-        if (!p_targettedPlayer || !pBind->bState || p_targettedPlayer != pPlayer)
+        if (!pTargettedPlayer || !pBind->bState || pTargettedPlayer != pPlayer)
         {
             return;
         }
