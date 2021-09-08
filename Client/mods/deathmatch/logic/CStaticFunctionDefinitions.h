@@ -125,6 +125,7 @@ public:
     static bool SetPlayerNametagText(CClientEntity& Entity, const char* szText);
     static bool SetPlayerNametagColor(CClientEntity& Entity, bool bRemoveOverride, unsigned char ucR, unsigned char ucG, unsigned char ucB);
     static bool SetPlayerNametagShowing(CClientEntity& Entity, bool bShowing);
+    static bool SetPlayerHealthtagShowing(CClientEntity& Entity, bool bShowing);
 
     // Ped funcs
     static CClientPed* CreatePed(CResource& Resource, unsigned long ulModel, const CVector& vecPosition, float fRotation);

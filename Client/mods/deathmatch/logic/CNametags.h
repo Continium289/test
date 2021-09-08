@@ -24,9 +24,6 @@ public:
     CNametags(CClientManager* pManager);
     ~CNametags();
 
-    bool GetDrawHealth() { return m_bDrawHealth; };
-    void SetDrawHealth(bool bDrawHealth) { m_bDrawHealth = bDrawHealth; };
-
     void DoPulse();
 
     void DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha);
@@ -44,7 +41,6 @@ private:
 
     CClientPlayerManager* m_pPlayerManager;
     CClientStreamer*      m_pPlayerStreamer;
-    bool                  m_bDrawHealth;
     CHud*                 m_pHud;
     unsigned short        m_usDimension;
     bool                  m_bVisible;

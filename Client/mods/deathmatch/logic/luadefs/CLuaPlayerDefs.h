@@ -25,6 +25,7 @@ public:
     LUA_DECLARE(GetPlayerNametagText);
     LUA_DECLARE(GetPlayerNametagColor);
     LUA_DECLARE(IsPlayerNametagShowing);
+    LUA_DECLARE(IsPlayerHealthtagShowing);
     LUA_DECLARE(GetPlayerPing);
     LUA_DECLARE(GetPlayerTeam);
     LUA_DECLARE(GetPlayerMoney);
@@ -39,6 +40,7 @@ public:
     LUA_DECLARE(SetPlayerNametagText);
     LUA_DECLARE(SetPlayerNametagColor);
     LUA_DECLARE(SetPlayerNametagShowing);
+    LUA_DECLARE(SetPlayerHealthtagShowing);
 
     // Community funcs
     LUA_DECLARE(GetPlayerUserName);

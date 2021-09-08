@@ -56,7 +56,9 @@ public:
     const char*   GetNametagText() { return m_strNametag.c_str(); }
     void          SetNametagText(const char* szText);
     bool          IsNametagShowing() { return m_bNametagShowing; }
+    bool          IsHealthtagShowing() { return m_bDrawHealth; }
     void          SetNametagShowing(bool bShowing) { m_bNametagShowing = bShowing; }
+    void          SetPlayerHealthtagShowing(bool bShowing) { m_bDrawHealth = bShowing; }
     unsigned long GetLastNametagShow() { return m_ulLastNametagShow; }
     void          SetLastNametagShow(unsigned long ulTime) { m_ulLastNametagShow = ulTime; }
 
@@ -147,6 +149,7 @@ private:
     CClientTeam* m_pTeam;
 
     bool          m_bNametagShowing;
+    bool          m_bDrawHealth;
     unsigned long m_ulLastNametagShow;
     unsigned char m_ucNametagColorR, m_ucNametagColorG, m_ucNametagColorB;
     bool          m_bNametagColorOverridden;

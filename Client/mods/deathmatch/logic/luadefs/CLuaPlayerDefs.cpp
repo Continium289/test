@@ -20,6 +20,7 @@ void CLuaPlayerDefs::LoadFunctions()
         {"getPlayerNametagText", GetPlayerNametagText},
         {"getPlayerNametagColor", GetPlayerNametagColor},
         {"isPlayerNametagShowing", IsPlayerNametagShowing},
+        {"isPlayerHealthtagShowing", IsPlayerHealthtagShowing},
         {"getPlayerPing", GetPlayerPing},
         {"getPlayerTeam", GetPlayerTeam},
         {"getPlayerFromNick", GetPlayerFromName},
@@ -37,6 +38,7 @@ void CLuaPlayerDefs::LoadFunctions()
         {"setPlayerNametagText", SetPlayerNametagText},
         {"setPlayerNametagColor", SetPlayerNametagColor},
         {"setPlayerNametagShowing", SetPlayerNametagShowing},
+        {"setPlayerHealthtagShowing", SetPlayerHealthtagShowing},
 
         // Community funcs
         {"getPlayerUserName", GetPlayerUserName},
@@ -77,6 +79,7 @@ void CLuaPlayerDefs::AddClass(lua_State* luaVM)
 
     lua_classfunction(luaVM, "setNametagText", "setPlayerNametagText");
     lua_classfunction(luaVM, "setNametagShowing", "setPlayerNametagShowing");
+    lua_classfunction(luaVM, "setHealthtagShowing", "setPlayerHealthtagShowing");
     lua_classfunction(luaVM, "setNametagColor", "setPlayerNametagColor");
 
     lua_classfunction(luaVM, "getPing", "getPlayerPing");
@@ -86,12 +89,14 @@ void CLuaPlayerDefs::AddClass(lua_State* luaVM)
     lua_classfunction(luaVM, "getNametagColor", "getPlayerNametagColor");
 
     lua_classfunction(luaVM, "isNametagShowing", "isPlayerNametagShowing");
+    lua_classfunction(luaVM, "isHealthtagShowing", "isPlayerHealthtagShowing");
 
     lua_classvariable(luaVM, "ping", NULL, "getPlayerPing");
     lua_classvariable(luaVM, "name", NULL, "getPlayerName");
     lua_classvariable(luaVM, "team", NULL, "getPlayerTeam");
     lua_classvariable(luaVM, "nametagText", "setPlayerNametagText", "getPlayerNametagText");
     lua_classvariable(luaVM, "nametagShowing", "setPlayerNametagShowing", "isPlayerNametagShowing");
+    lua_classvariable(luaVM, "healthtagShowing", "setPlayerHealthtagShowing", "isPlayerHealthtagShowing");
 
     lua_registerclass(luaVM, "Player", "Ped");
 }
@@ -223,6 +228,27 @@ int CLuaPlayerDefs::IsPlayerNametagShowing(lua_State* luaVM)
     {
         bool bIsNametagShowing = pPlayer->IsNametagShowing();
         lua_pushboolean(luaVM, bIsNametagShowing);
+        return 1;
+    }
+    else
+        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
+
+    lua_pushboolean(luaVM, false);
+    return 1;
+}
+
+int CLuaPlayerDefs::IsPlayerHealthtagShowing(lua_State* luaVM)
+{
+    //  bool isPlayerHealthtagShowing ( player thePlayer )
+    CClientPlayer* pPlayer;
+
+    CScriptArgReader argStream(luaVM);
+    argStream.ReadUserData(pPlayer);
+
+    if (!argStream.HasErrors())
+    {
+        bool bIsHealthtagShowing = pPlayer->IsHealthtagShowing();
+        lua_pushboolean(luaVM, bIsHealthtagShowing);
         return 1;
     }
     else
@@ -523,6 +549,33 @@ int CLuaPlayerDefs::SetPlayerNametagShowing(lua_State* luaVM)
     {
         // Set the new rotation
         if (CStaticFunctionDefinitions::SetPlayerNametagShowing(*pPlayer, bShowing))
+        {
+            lua_pushboolean(luaVM, true);
+            return 1;
+        }
+    }
+    else
+        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
+
+    // Failed
+    lua_pushboolean(luaVM, false);
+    return 1;
+}
+
+int CLuaPlayerDefs::SetPlayerHealthtagShowing(lua_State* luaVM)
+{
+    //  bool setPlayerHealthtagShowing ( player thePlayer, bool showing )
+    CClientEntity* pPlayer;
+    bool           bShowing;
+
+    CScriptArgReader argStream(luaVM);
+    argStream.ReadUserData(pPlayer);
+    argStream.ReadBool(bShowing);
+
+    if (!argStream.HasErrors())
+    {
+        // Set the new rotation
+        if (CStaticFunctionDefinitions::SetPlayerHealthtagShowing(*pPlayer, bShowing))
         {
             lua_pushboolean(luaVM, true);
             return 1;

@@ -2006,6 +2006,20 @@ bool CStaticFunctionDefinitions::SetPlayerNametagShowing(CClientEntity& Entity, 
     return false;
 }
 
+bool CStaticFunctionDefinitions::SetPlayerHealthtagShowing(CClientEntity& Entity, bool bShowing)
+{
+    RUN_CHILDREN(SetPlayerHealthtagShowing(**iter, bShowing))
+
+    if (IS_PLAYER(&Entity))
+    {
+        CClientPlayer& Player = static_cast<CClientPlayer&>(Entity);
+
+        Player.SetPlayerHealthtagShowing(bShowing);
+        return true;
+    }
+    return false;
+}
+
 bool CStaticFunctionDefinitions::KillPed(CClientEntity& Entity, CClientEntity* pKiller = NULL, unsigned char ucKillerWeapon = 0xFF,
                                          unsigned char ucBodyPart = 0xFF, bool bStealth = false)
 {

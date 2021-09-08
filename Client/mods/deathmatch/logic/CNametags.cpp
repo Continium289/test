@@ -31,7 +31,6 @@ CNametags::CNametags(CClientManager* pManager)
 {
     m_pPlayerStreamer = pManager->GetPlayerStreamer();
     m_pPlayerManager = pManager->GetPlayerManager();
-    m_bDrawHealth = true;
     m_pHud = g_pGame->GetHud();
     m_usDimension = 0;
     m_bVisible = true;
@@ -280,19 +279,17 @@ void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
                               DT_NOCLIP | DT_CENTER);
         pGraphics->DrawString(iScreenPosX, iScreenPosY, iScreenPosX, iScreenPosY, COLOR_ARGB(255, ucR, ucG, ucB), szNick, 1.0f, 1.0f, DT_NOCLIP | DT_CENTER);
 
-        SBindableGTAControl* pBind = g_pCore->GetKeyBinds()->GetBindableFromControl("aim_weapon");
-        CClientPlayer*       pLocalPlayer = g_pClientGame->GetLocalPlayer();
-        CClientPlayer*       pTargettedPlayer = dynamic_cast<CClientPlayer*>(pLocalPlayer->GetTargetedPed());
-
-        // If player is not targetting or aiming by weapon
-        if (!pTargettedPlayer || !pBind->bState || pTargettedPlayer != pPlayer)
-        {
-            return;
-        }
-
         // We need to draw health tags?
-        if (m_bDrawHealth)
+        if (pPlayer->IsHealthtagShowing())
         {
+            CClientPlayer* pTargettedPlayer = dynamic_cast<CClientPlayer*>(g_pClientGame->GetLocalPlayer()->GetTargetedPed());
+
+            // If player is not targetting or aiming by weapon
+            if (!pTargettedPlayer || pTargettedPlayer != pPlayer)
+            {
+                return;
+            }
+
             fHealth = fHealth / (750.0f / 510.0f);
             long lRed = 0;
             long lGreen = 0;

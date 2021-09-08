@@ -72,6 +72,7 @@ CClientPlayer::CClientPlayer(CClientManager* pManager, ElementID ID, bool bIsLoc
     m_pTeam = NULL;
 
     m_bNametagShowing = true;
+    m_bDrawHealth     = true;
     m_ucNametagColorR = 255;
     m_ucNametagColorG = 255;
     m_ucNametagColorB = 255;
