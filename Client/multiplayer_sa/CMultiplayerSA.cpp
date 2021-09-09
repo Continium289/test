@@ -1533,6 +1533,9 @@ void CMultiplayerSA::InitHooks()
     InitHooks_VehicleWeapons();
 
     InitHooks_Streaming();
+
+    // by default off this rendering
+    SetPedTargetingMarkerEnabled(false);
 }
 
 // Used to store copied pointers for explosions in the FxSystem

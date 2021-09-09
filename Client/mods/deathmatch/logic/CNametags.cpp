@@ -220,11 +220,6 @@ void CNametags::DoPulse()
 
 void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
 {
-    // If nametag is hidden, don't draw
-
-    if (!pPlayer->IsNametagShowing())
-        return;
-
     // If they aren't in the same dimension, don't draw
     if (pPlayer->GetDimension() != m_usDimension)
         return;
@@ -232,6 +227,16 @@ void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
     // If they aren't in the same interior, don't draw
     if (pPlayer->GetInterior() != m_ucInterior)
         return;
+
+    bool bDrawNickName = pPlayer->IsNametagShowing();
+    bool bDrawHealth   = pPlayer->IsHealthtagShowing();
+
+    // If both of flags are off, do nothing
+    if (!bDrawNickName && !bDrawHealth)
+    {
+        return;
+    }
+
 
     // Grab the resolution width and height
     CGraphicsInterface* pGraphics = g_pCore->GetGraphics();
@@ -264,23 +269,27 @@ void CNametags::DrawTagForPlayer(CClientPlayer* pPlayer, unsigned char ucAlpha)
     if (fHealth > 0 && vecScreenPosition.fX > -50.0f && vecScreenPosition.fX < fResWidth + 50.f && vecScreenPosition.fY > -50.0f &&
         vecScreenPosition.fY < fResHeight + 50.f && vecScreenPosition.fZ > 0.1f)
     {
-        // Grab the nick to show
-        const char* szNick = pPlayer->GetNametagText();
-        if (!szNick || !szNick[0])
-            szNick = pPlayer->GetNick();
+        if (bDrawNickName)
+        {
+            // Grab the nick to show
+            const char* szNick = pPlayer->GetNametagText();
+            if (!szNick || !szNick[0])
+                szNick = pPlayer->GetNick();
 
-        // Draw his name
-        unsigned char ucR, ucG, ucB;
-        pPlayer->GetNametagColor(ucR, ucG, ucB);
-        // Draw shadow first
-        int iScreenPosX = static_cast<int>(vecScreenPosition.fX);
-        int iScreenPosY = static_cast<int>(vecScreenPosition.fY);
-        pGraphics->DrawString(iScreenPosX + 1, iScreenPosY + 1, iScreenPosX + 1, iScreenPosY + 1, COLOR_ARGB(255, 0, 0, 0), szNick, 1.0f, 1.0f,
-                              DT_NOCLIP | DT_CENTER);
-        pGraphics->DrawString(iScreenPosX, iScreenPosY, iScreenPosX, iScreenPosY, COLOR_ARGB(255, ucR, ucG, ucB), szNick, 1.0f, 1.0f, DT_NOCLIP | DT_CENTER);
+            // Draw his name
+            unsigned char ucR, ucG, ucB;
+            pPlayer->GetNametagColor(ucR, ucG, ucB);
+            // Draw shadow first
+            int iScreenPosX = static_cast<int>(vecScreenPosition.fX);
+            int iScreenPosY = static_cast<int>(vecScreenPosition.fY);
+            pGraphics->DrawString(iScreenPosX + 1, iScreenPosY + 1, iScreenPosX + 1, iScreenPosY + 1, COLOR_ARGB(255, 0, 0, 0), szNick, 1.0f, 1.0f,
+                                  DT_NOCLIP | DT_CENTER);
+            pGraphics->DrawString(iScreenPosX, iScreenPosY, iScreenPosX, iScreenPosY, COLOR_ARGB(255, ucR, ucG, ucB), szNick, 1.0f, 1.0f,
+                                  DT_NOCLIP | DT_CENTER);
+        }
 
         // We need to draw health tags?
-        if (pPlayer->IsHealthtagShowing())
+        if (bDrawHealth)
         {
             CClientPlayer* pTargettedPlayer = dynamic_cast<CClientPlayer*>(g_pClientGame->GetLocalPlayer()->GetTargetedPed());
 
